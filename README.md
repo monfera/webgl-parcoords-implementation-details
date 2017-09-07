@@ -89,6 +89,16 @@ Draw optimizations:
 - Fixed 1px line width: this allows the use of `gl.LINES`; the WebGL standard permits an implementation to support just one width (one pixel), which the recent browsers exploit (formerly, line thicknesses could go 4..16). A larger apparent width could be supported via drawing two elongated triangles, but it'd be a different vertex geometry, making the GPU based crossfiltering harder if not impossible (see separate section on crossfiltering). 
 - Not exploiting retina screens: to exploit these would require blowing up the raster size by 2x2 times, ending up with 4 times that many pixels. Not only would it be much slower, the 1px width lines would be less salient, contrary to stated needs. [This example](https://codepen.io/monfera/pen/apWqgM) shows how the maximal resolution looks on Retina screens.
 
+Exhibit 1: showing how just panel pairs are rerendered on column move, but all panels are rerendered on filtering:
+
+![flashing](https://user-images.githubusercontent.com/1548516/30180339-de406148-940f-11e7-9354-fa4641167534.gif)
+
+Exhibit 2: incremental rendering (even while user interaction is going on):
+
+![incremental](https://user-images.githubusercontent.com/1548516/30180465-4a4bdc64-9410-11e7-9a2e-8876f210389e.gif)
+
+The two can be combined, eg. user moves a column, it'll fully rerender adjacent panels while the rest are done incrementally.
+
 Geometry related optimizations:
 
 - `gl.LINES` - the above mentioned optimization of using lines also saves on GPU memory, though it's not a bottleneck now
